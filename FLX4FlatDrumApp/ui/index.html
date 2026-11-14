@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b0d11">
+  <title>FLX4 FLAT 2D | Pioneer DDJ-FLX4 Controller</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar" aria-label="Controller status and connection">
+      <div class="identity" aria-label="FLX4 Flat 2D, two-dimensional hardware view">
+        <span class="identity-symbol" aria-hidden="true">◈</span>
+        <span class="identity-type"><strong>FLX4 <span>FLAT</span></strong><small>2D PERFORMANCE SURFACE <span class="version">/ 01</span></small></span>
+      </div>
+      <div class="connection-signals" aria-live="polite">
+        <span class="signal" id="rbStatus"><span class="signal-dot" aria-hidden="true"></span>REKORDBOX · OFFLINE</span>
+        <span class="signal" id="midiStatus"><span class="signal-dot" aria-hidden="true"></span>MIDI · CHECKING</span>
+      </div>
+      <button type="button" id="connectRB" class="connect-button">CONNECT REKORDBOX</button>
+    </header>
+
+    <main>
+      <div class="workspace-heading">
+        <div class="workspace-title"><span class="eyebrow">PIONEER DJ / CONTROLLER</span><h1>DDJ-FLX4 <span>FLAT 2D CONTROL</span></h1></div>
+        <div class="route-picker"><label for="routeSelector">PERFORMANCE ROUTE</label><select id="routeSelector" aria-label="Select performance destination"><option value="rekordbox">REKORDBOX</option><option value="maschine">MASCHINE LAB</option><option value="vintage">VINTAGE SAMPLER</option><option value="asr10">ASR-10 SAMPLER</option></select></div>
+      </div>
+
+      <section class="controller-section" aria-label="Full flat top-down Pioneer DDJ-FLX4 controller">
+        <div class="hardware-stage">
+          <div id="hardware" class="hardware" role="group" aria-label="Interactive Pioneer DDJ-FLX4 top-down hardware layout. All controls have keyboard accessible targets.">
+            <img class="hardware-photo" src="./flx4-top-faders-clean.png" alt="" draggable="false">
+            <div id="hotspots" class="hotspots" aria-label="Decks, jog wheels, transport, performance pads and mixer controls"></div>
+          </div>
+        </div>
+        <div class="controller-footnote"><span><span class="live-mark" aria-hidden="true"></span>HARDWARE SURFACE / 1:1 PROPORTIONS</span><span>CLICK, DRAG OR USE KEYBOARD TO PERFORM</span></div>
+      </section>
+
+      <section class="companion-section" aria-label="Sampler and device companion">
+        <div class="companion-header">
+          <div class="companion-heading"><span class="section-index">01 /</span><div><strong>SAMPLER COMPANION</strong><small>EXISTING INSTRUMENTS · MIDI / AUDIO ROUTING</small></div></div>
+          <span id="routeStatus" class="route-readout" role="status" aria-live="polite">REKORDBOX ROUTE SELECTED</span>
+          <button type="button" id="toggleCompanion" class="drawer-toggle" aria-expanded="false" aria-controls="companionPanel">OPEN COMPANION <span class="chevron" aria-hidden="true">⌄</span></button>
+        </div>
+        <div id="companionPanel" class="companion-panel" hidden>
+          <div class="companion-grid">
+            <section class="companion-card" aria-label="Available existing sampler apps">
+              <div class="card-heading"><span>AVAILABLE INSTRUMENTS</span><small>LOCAL SAMPLER ROUTES</small></div>
+              <div id="samplerApps" class="sampler-apps" aria-live="polite"><span class="empty-apps">Checking installed sampler companions…</span></div>
+            </section>
+            <section class="companion-card device-card" aria-label="Audio and MIDI information">
+              <div class="card-heading"><span>DEVICE ROUTING</span><small>PERFORMANCE AUDIO / MIDI</small></div>
+              <div class="device-line"><span>FLX4 AUDIO DEVICE</span><button type="button" id="flxAudioCheck" class="quiet-button">CHECK DEVICE</button></div>
+              <p id="flxAudioStatus" class="device-status" aria-live="polite">Audio device detection has not run yet.</p>
+              <p class="device-note">Select an existing sampler above to route performance pad notes through the local bridge. Rekordbox can remain open while an external instrument plays.</p>
+            </section>
+          </div>
+        </div>
+      </section>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </main>
+  </div>
+</body>
+</html>

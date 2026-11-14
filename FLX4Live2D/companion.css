@@ -1,0 +1,82 @@
+/* FLX4 Live 2D uses the existing exact photo-textured 3D controller. The
+ * perspective camera is fixed; only the supporting software layout changes. */
+.app-shell {
+  grid-template-rows: 56px 86px minmax(0,1fr) 0 25px !important;
+  gap: 6px !important;
+  padding: 6px !important;
+}
+.app-shell .browser-panel {display:none !important}
+.app-shell .main-stage {
+  grid-template-columns: minmax(0,1fr) !important;
+  min-height: 0;
+}
+.app-shell .viewport-panel {min-height: 0;border-radius: 7px}
+.app-shell .fx-panel {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 300px;
+  max-height: calc(100% - 10px);
+  z-index: 30;
+  background: rgba(8, 10, 14, .97);
+}
+.app-shell .main-stage:not(.fx-hidden):not(.hardware-focus) .fx-panel { display:block }
+.app-shell .main-stage.fx-hidden .fx-panel, .app-shell .main-stage.hardware-focus .fx-panel {display:none !important}
+.app-shell .viewport-overlay.top-right {display:none !important}
+.app-shell .viewport-overlay.top-left {top:9px;left:10px}
+.app-shell .deck-strip{min-height:0;padding:4px}
+.app-shell .deck-card canvas{height:47px}
+.app-shell .deck-meta{padding:6px 8px 0}
+.app-shell .deck-card{grid-template-rows:1fr 20px}
+.app-shell .deck-number{font-size:22px}
+.app-shell .deck-strip .center-readout{grid-template-rows:1fr 20px}
+.app-shell .brand-sub{letter-spacing:.08em}
+.app-shell .footer{min-height:22px}
+.app-shell .view-badge{font-size:8px}
+.app-shell .view-help{font-size:9px}
+.app-shell .viewport-panel canvas{cursor:default !important}
+.sampler-open {
+  position:fixed;right:20px;bottom:41px;z-index:110;
+  background:#11171c;color:#c4e7ed;border:1px solid #3c7d93;
+  box-shadow:0 2px 16px #000c, inset 0 0 8px #0b8bad21;
+  border-radius:4px;padding:10px 13px;font-size:10px;font-weight:800;
+  letter-spacing:.12em;cursor:pointer;min-width:200px;
+}
+.sampler-open:hover{border-color:#85c5d6;background:#18232b}
+.sampler-open-indicator {
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:#40c6c2;box-shadow:0 0 8px #27b6d9;margin-right:8px;
+}
+.sampler-companion{
+  position:fixed;right:15px;top:125px;bottom:85px;width:min(390px,calc(100vw - 25px));
+  overflow-y:auto;z-index:120;
+  background:linear-gradient(150deg,#161d26,#0b0d12 60%);color:#f2f7f8;
+  border:1px solid #435d69;border-radius:10px;box-shadow:0 20px 95px #000e;
+  padding:14px;font:12px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.sampler-companion[hidden] {display:none}
+.sampler-companion header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2e3c44;padding-bottom:10px}
+.sampler-companion header small{display:block;color:#64b4c7;font-size:9px;letter-spacing:.16em}
+.sampler-companion header strong{font-size:17px;letter-spacing:.06em}
+.sampler-companion header button{border:1px solid #45525d;background:#1b232b;color:#f4fafb;border-radius:3px;font-size:22px;padding:0;width:32px;height:31px;cursor:pointer}
+.sampler-companion p{font-size:11px;color:#acbac5;line-height:1.55;margin:11px 0}
+.companion-subhead{font-size:9px;font-weight:800;color:#7f95a5;letter-spacing:.14em;margin:12px 0 6px}
+.companion-routes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+.companion-routes button,.companion-apps button,#flxAudioCheck{font:700 10px -apple-system,sans-serif;letter-spacing:.045em;border:1px solid #39434e;border-radius:3px;color:#b4bdc9;background:#171d24;padding:9px 5px;cursor:pointer}
+.companion-routes button.selected{color:#0a171c;border-color:#5cd7e3;background:#65d3e1;box-shadow:0 0 15px #43bbd35c}
+.companion-routes button:not(.selected):hover,.companion-apps button:hover,#flxAudioCheck:hover{border-color:#75cfe5}
+.companion-connection{padding:9px 8px;background:#121b23;color:#9adddf;border-left:2px solid #65cadb;font:11px/1.5 monospace;margin-top:7px}
+.companion-apps{display:grid;gap:6px}
+.companion-app{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;background:#131923;border:1px solid #2b3744;border-radius:4px}
+.companion-app .name{font-size:11px;font-weight:800}
+.companion-app .detail{font-size:9px;color:#879eae}
+.companion-app button{white-space:nowrap;padding:6px 11px}
+.companion-app button:disabled{opacity:.3;cursor:not-allowed}
+#flxConnectRB{width:100%;margin:0 0 2px;border:1px solid #597585;background:#24303b;color:#dbf3f7;padding:9px 6px;border-radius:3px;font:700 10px -apple-system,sans-serif;letter-spacing:.07em;cursor:pointer}
+#flxConnectRB:hover{background:#354555}
+.companion-detail{font:10px/1.5 monospace;color:#a6b8c1;margin-bottom:7px}
+#flxAudioCheck{width:100%;padding:9px}
+.sampler-companion p.companion-note{border-top:1px solid #2b3843;padding-top:10px;color:#90a6b4}
+@media(max-width:1000px){.app-shell .rb-global{display:none}.sampler-companion{right:9px;left:9px;top:115px;width:auto}}
+@media(max-height:680px){.app-shell{grid-template-rows:48px 64px minmax(0,1fr) 0 21px!important}.sampler-companion{top:75px;bottom:55px}}

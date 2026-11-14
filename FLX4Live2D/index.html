@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>FLX4 LIVE — DJ Performance Surface</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">◈</span><div><strong>FLX4 <em>LIVE</em></strong><small>2D PERFORMANCE SURFACE</small></div></div>
+    <div class="signals">
+      <span class="signal" id="rbStatus"><i></i>REKORDBOX · OFFLINE</span>
+      <span class="signal" id="midiStatus"><i></i>ABLETON MIDI · CHECKING</span>
+      <span class="signal good"><i></i>LOCAL AUDIO · READY</span>
+    </div>
+    <a class="outline" style="text-decoration:none;display:inline-flex;align-items:center" href="./realistic.html" title="Open the optional photo-textured fixed-view controller">PHOTO VIEW</a>
+    <button class="outline" id="connectRB">CONNECT REKORDBOX</button>
+  </header>
+  <main>
+    <section class="intro"><div><span class="eyebrow">DJ CONTROLLER / PERFORMANCE</span><h1>DDJ-FLX4 <span>LIVE</span></h1><p>Two virtual decks, live performance pads, and an independent 16-pad drum sampler.</p></div><div class="right-hint">REKORDBOX CONTROL <span>+</span> LOCAL SAMPLE AUDIO</div></section>
+    <section class="desk" aria-label="DDJ-FLX4 controller">
+      <div class="toprow">
+        <div class="deckhead">DECK <b>01</b><span id="deck1Label">READY</span></div>
+        <div class="browser">
+          <button data-action="browser_load" data-deck="1">LOAD 1</button>
+          <button data-action="browser_back" title="Browser back">‹</button>
+          <div class="browse-knob" id="browseKnob" tabindex="0" role="button" aria-label="Browse tracks. Scroll to navigate and click to select."><span>BROWSE</span><div class="knob"></div><small>SCROLL / PUSH</small></div>
+          <button data-action="browser_load" data-deck="2">LOAD 2</button>
+        </div>
+        <div class="deckhead right">DECK <b>02</b><span id="deck2Label">READY</span></div>
+      </div>
+      <div class="controller">
+        <div class="deck" data-deck-section="1">
+          <div class="deck-tools">
+            <div class="loop-controls">
+              <button data-action="deck_button" data-control="loop_in" data-deck="1">IN</button>
+              <button data-action="deck_button" data-control="loop_out" data-deck="1">OUT</button>
+              <button data-action="deck_button" data-control="four_beat" data-deck="1" class="wide">4 BEAT / EXIT</button>
+            </div>
+            <button class="sync" data-action="deck_button" data-control="sync" data-deck="1">BEAT SYNC</button>
+          </div>
+          <div class="wheelzone">
+            <div class="tempo"><label>TEMPO</label><input aria-label="Deck 1 tempo" type="range" min="0" max="1" step=".001" value=".5" data-action="tempo" data-deck="1" class="vert"><span>±</span></div>
+            <div class="jog" data-jog="1" role="slider" aria-label="Deck 1 jog wheel" tabindex="0" aria-valuenow="0" aria-valuemin="-18" aria-valuemax="18"><div class="jog-inner"><span>01</span><strong>FLX4</strong><small>JOG / SCRATCH</small></div></div>
+          </div>
+          <div class="transport"><button class="cue" data-action="cue" data-deck="1">CUE</button><button class="play" data-action="play" data-deck="1">▶ <span>PLAY / PAUSE</span></button><button data-action="deck_button" data-control="loop_half" data-deck="1">½ LOOP</button><button data-action="deck_button" data-control="loop_double" data-deck="1">2× LOOP</button></div>
+          <div class="modes" data-modes="1"><button class="selected" data-mode="hotcue">HOT CUE</button><button data-mode="padfx">PAD FX</button><button data-mode="beatjump">BEAT JUMP</button><button data-mode="sampler">RB SAMPLER</button><button class="drum-mode" data-mode="drums">DRUMS</button></div>
+          <div class="pads" id="pads1" aria-label="Deck 1 performance pads"></div>
+        </div>
+        <section class="mixer" aria-label="Mixer">
+          <div class="fx-section"><span class="micro">BEAT FX</span><div class="fx-select"><button data-action="fx_select" data-direction="-1">‹</button><span>FX SELECT</span><button data-action="fx_select" data-direction="1">›</button></div><div class="fx-select"><button data-action="fx_beat" data-direction="-1">‹</button><span>BEAT</span><button data-action="fx_beat" data-direction="1">›</button></div><div class="fx-selector"><button class="unit selected" data-fxunit="1">1</button><button class="unit" data-fxunit="2">2</button></div><div class="control-wrap"><span>LEVEL / DEPTH</span><input class="rotary" type="range" min="0" max="1" step=".001" value=".5" data-action="fx_level"></div><button class="beat-fx" data-action="fx_toggle">ON / OFF</button></div>
+          <div class="mixer-columns"><div class="channel" data-mix-channel="1"></div><div class="channel" data-mix-channel="2"></div></div>
+          <div class="smart-buttons"><button data-action="smart_cfx">SMART CFX</button><button data-action="smart_cfx_select">SELECT</button><button data-action="smart_fader">SMART FADER</button></div>
+          <div class="cross"><span>CROSSFADER</span><input aria-label="Crossfader" type="range" min="0" max="1" step=".001" value=".5" data-action="crossfader"></div>
+        </section>
+        <div class="deck" data-deck-section="2">
+          <div class="deck-tools">
+            <div class="loop-controls"><button data-action="deck_button" data-control="loop_in" data-deck="2">IN</button><button data-action="deck_button" data-control="loop_out" data-deck="2">OUT</button><button data-action="deck_button" data-control="four_beat" data-deck="2" class="wide">4 BEAT / EXIT</button></div>
+            <button class="sync" data-action="deck_button" data-control="sync" data-deck="2">BEAT SYNC</button>
+          </div>
+          <div class="wheelzone reverse"><div class="tempo"><label>TEMPO</label><input aria-label="Deck 2 tempo" type="range" min="0" max="1" step=".001" value=".5" data-action="tempo" data-deck="2" class="vert"><span>±</span></div><div class="jog" data-jog="2" role="slider" aria-label="Deck 2 jog wheel" tabindex="0" aria-valuenow="0" aria-valuemin="-18" aria-valuemax="18"><div class="jog-inner"><span>02</span><strong>FLX4</strong><small>JOG / SCRATCH</small></div></div></div>
+          <div class="transport"><button class="cue" data-action="cue" data-deck="2">CUE</button><button class="play" data-action="play" data-deck="2">▶ <span>PLAY / PAUSE</span></button><button data-action="deck_button" data-control="loop_half" data-deck="2">½ LOOP</button><button data-action="deck_button" data-control="loop_double" data-deck="2">2× LOOP</button></div>
+          <div class="modes" data-modes="2"><button class="selected" data-mode="hotcue">HOT CUE</button><button data-mode="padfx">PAD FX</button><button data-mode="beatjump">BEAT JUMP</button><button data-mode="sampler">RB SAMPLER</button><button class="drum-mode" data-mode="drums">DRUMS</button></div>
+          <div class="pads" id="pads2" aria-label="Deck 2 performance pads"></div>
+        </div>
+      </div>
+    </section>
+    <section class="bottom-grid">
+      <section class="panel sampler-panel"><div class="panel-heading"><div><span class="eyebrow">LOCAL WEBAUDIO / INDEPENDENT OUTPUT</span><h2>DRUM LAB <span>16 SLOTS</span></h2></div><div class="panel-actions"><button class="outline" id="loadDemoKit">LOAD DEMO KIT</button><button class="outline" id="importSamples">IMPORT AUDIO FILES</button><input id="files" type="file" accept="audio/*,.wav,.mp3,.aiff,.aif,.ogg,.flac" multiple hidden><button class="danger" id="stopAll">STOP ALL</button></div></div><p class="helper">Select DRUMS on either deck to play these slots from its eight pads. The left deck triggers 1–8; the right deck triggers 9–16. Click a slot here to audition it.</p><div class="sample-grid" id="sampleGrid"></div><div class="audio-options"><label class="toggle"><input type="checkbox" id="enableMidi"> Send MIDI notes to Ableton when triggering drums <small>(notes 36–51)</small></label><label>LOCAL AUDIO OUTPUT <select id="audioOutput"><option value="">System default</option></select></label><span id="outputHint">Output device selection depends on browser support.</span></div></section>
+      <section class="panel info-panel"><span class="eyebrow">PERFORMANCE BRIDGE</span><h2>CONNECTIONS</h2><div class="status-row"><span>REKORDBOX CONTROL</span><strong id="rbDetail">WebSocket 127.0.0.1:18765</strong></div><div class="status-row"><span>ABLETON MIDI OUT</span><strong id="midiDetail">Checking bridge…</strong></div><div class="status-row"><span>LOCAL SAMPLE OUTPUT</span><strong>WebAudio · Browser</strong></div><p>RB SAMPLER triggers Rekordbox’s performance pads. DRUMS plays your imported audio locally. Enable MIDI routing separately to send notes to Ableton through the local bridge.</p><div id="toast" role="status" aria-live="polite"></div></section>
+    </section>
+  </main>
+</body>
+</html>

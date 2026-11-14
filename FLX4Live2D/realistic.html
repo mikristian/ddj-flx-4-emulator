@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FLX4 Live 2D — Fixed View / Rekordbox + Samplers</title>
+  <link rel="stylesheet" href="./realistic.css" />
+  <link rel="stylesheet" href="./companion.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three.module.js"
+    }
+  }
+  </script>
+  <script>
+    window.__dashboardBootErrors=[];
+    window.addEventListener('error',function(e){
+      window.__dashboardBootErrors.push(String(e.message||e.error||'resource error'));
+      var el=document.getElementById('bootError');
+      if(el){el.textContent='3D ERROR: '+window.__dashboardBootErrors.join(' | ');el.style.display='block';}
+    });
+    window.addEventListener('unhandledrejection',function(e){
+      window.__dashboardBootErrors.push(String(e.reason||'unhandled rejection'));
+      var el=document.getElementById('bootError');
+      if(el){el.textContent='3D ERROR: '+window.__dashboardBootErrors.join(' | ');el.style.display='block';}
+    });
+  </script>
+</head>
+<body>
+  <div id="bootError" style="display:none;position:fixed;left:12px;bottom:46px;z-index:1000;max-width:70vw;padding:10px 12px;background:#430b0b;color:#ffd9d9;border:1px solid #ff5858;border-radius:6px;font:11px ui-monospace,monospace"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">◇</div>
+        <div>
+          <div class="brand-title">rekordbox <span>LIVE MCP</span></div>
+          <div class="brand-sub">ORIGINAL PHOTO-TEXTURED DDJ-FLX4 · FIXED VIEW</div>
+        </div>
+      </div>
+      <nav class="rb-global">
+        <button class="mode-select active">PERFORMANCE <span>⌄</span></button>
+        <button class="layout-select" id="layoutModeButton">HYBRID <span>⌄</span></button>
+        <div class="panel-toggles">
+          <button id="fxPanelToggle" class="active" title="FX panel">FX</button>
+          <button id="mixPointPanelToggle" title="Mix Point Link">MIX PT</button>
+          <button id="samplerPanelToggle" title="Sampler deck">SAMP</button>
+          <button id="mixerPanelToggle" title="Mixer panel">MIX</button>
+          <button id="recordPanelToggle" title="Session capture panel">REC</button>
+        </div>
+        <button class="global-link" id="linkTopToggle">LINK</button>
+        <button class="global-mini" id="padTopToggle">PAD</button>
+        <button class="global-mini" id="midiPanelToggle">MIDI</button>
+        <button class="global-mini active" id="libraryTopToggle">BROWSE</button>
+      </nav>
+      <div class="status-row">
+        <div class="status-chip"><i id="midiDot"></i><span>MIDI</span><b id="midiStatus">CONNECTING</b></div>
+        <div class="status-chip"><i id="rbDot"></i><span>REKORDBOX</span><b id="rbStatus">CHECKING</b></div>
+        <div class="status-chip"><i id="wsDot"></i><span>WS</span><b id="wsStatus">CONNECTING</b></div>
+        <div class="status-chip"><i class="good"></i><span>OSC</span><b>9000</b></div>
+      </div>
+    </header>
+
+    <section class="deck-strip">
+      <article class="deck-card deck-a">
+        <div class="deck-number">1</div>
+        <div class="deck-meta">
+          <img class="deck-art" id="deck1Art" alt="" />
+          <div><strong id="deck1Title">DECK 1</strong><span id="deck1Artist">QUEUE PREVIEW</span></div>
+          <b id="deck1State">PAUSED</b>
+        </div>
+        <canvas id="wave1"></canvas>
+        <div class="deck-readout"><span id="deck1Bpm">124.0 BPM</span><span id="deck1Key">8A</span><span class="deck-cue-strip" id="deck1Cues"></span><span class="deck-rx-meter"><i id="deck1Level"></i></span><span id="deck1Time">00:00</span></div>
+      </article>
+      <div class="center-readout">
+        <div class="fx-mini">
+          <span>PHASE / MASTER</span>
+          <div class="phase-meter" id="phaseMeter"><i></i><i></i><i></i><i class="hot"></i><i></i><i></i><i></i><i></i></div>
+          <strong id="masterClock">124.0</strong>
+          <small><b id="fxStep">FX ±</b> · <b id="fxBeat">1 BEAT</b></small>
+        </div>
+        <div class="cue-readout" id="cueBanner">LIVE CONTROLLER</div>
+      </div>
+      <article class="deck-card deck-b">
+        <div class="deck-number">2</div>
+        <div class="deck-meta">
+          <img class="deck-art" id="deck2Art" alt="" />
+          <div><strong id="deck2Title">DECK 2</strong><span id="deck2Artist">QUEUE PREVIEW</span></div>
+          <b id="deck2State">PAUSED</b>
+        </div>
+        <canvas id="wave2"></canvas>
+        <div class="deck-readout"><span id="deck2Bpm">124.0 BPM</span><span id="deck2Key">8B</span><span class="deck-cue-strip" id="deck2Cues"></span><span class="deck-rx-meter"><i id="deck2Level"></i></span><span id="deck2Time">00:00</span></div>
+      </article>
+    </section>
+
+    <main class="main-stage fx-hidden">
+      <section class="software-panel-dock" id="softwarePanelDock" aria-live="polite">
+        <article class="software-panel" data-software-panel="mixpoint">
+          <header><div><small>REKORDBOX ANALYSIS</small><strong>MIX POINT LINK</strong></div><button class="software-close">×</button></header>
+          <div class="mixpoint-grid">
+            <div class="mixpoint-deck" id="mixPointDeck1"><span>DECK 1</span><strong>—</strong><em>—</em><div class="phrase-timeline"></div><small class="mixpoint-times">—</small><small class="mixpoint-cues">—</small></div>
+            <div class="mixpoint-center"><b id="mixCompatibility">—</b><span id="mixCompatibilityDetail">Select/load two analyzed tracks</span><div class="mixpoint-suggestion" id="mixPointSuggestion"><small>AI TRANSITION PLAN</small><strong>—</strong><span>Waiting for two analyzed tracks</span></div><small id="mixPointConfigStatus">READING REKORDBOX SETTINGS…</small><button id="mixPointSwap">SWAP DECK TARGET</button></div>
+            <div class="mixpoint-deck" id="mixPointDeck2"><span>DECK 2</span><strong>—</strong><em>—</em><div class="phrase-timeline"></div><small class="mixpoint-times">—</small><small class="mixpoint-cues">—</small></div>
+          </div>
+        </article>
+
+        <article class="software-panel" data-software-panel="sampler">
+          <header><div><small>PERFORMANCE PADS</small><strong>SAMPLER</strong></div><button class="software-close">×</button></header>
+          <div class="sampler-toolbar"><span id="samplerConfigStatus">READING REKORDBOX SAMPLER SETTINGS…</span><b id="samplerDeckLabel">DECK 1</b><button id="samplerRefresh">REFRESH</button></div>
+          <div class="software-sampler-pads" id="softwareSamplerPads"></div>
+          <div class="sampler-library" id="samplerLibrary"><small>SAMPLER LIBRARY · READ ONLY</small></div>
+        </article>
+
+        <article class="software-panel" data-software-panel="mixer">
+          <header><div><small>VERIFIED MIDI</small><strong>MIXER</strong></div><button class="software-close">×</button></header>
+          <div class="software-mixer">
+            <div class="mixer-channel" data-mix-deck="1"><b>CH 1</b><label>HIGH <input data-mix-control="eq" data-band="high" type="range" min="0" max="1" step="0.01" value="0.5"></label><label>MID <input data-mix-control="eq" data-band="mid" type="range" min="0" max="1" step="0.01" value="0.5"></label><label>LOW <input data-mix-control="eq" data-band="low" type="range" min="0" max="1" step="0.01" value="0.5"></label><label>CFX <input data-mix-control="cfx" type="range" min="0" max="1" step="0.01" value="0.5"></label><label>LEVEL <input data-mix-control="channel_fader" type="range" min="0" max="1" step="0.01" value="0.78"></label></div>
+            <div class="mixer-master"><span>CROSSFADER</span><input id="softwareCrossfader" type="range" min="0" max="1" step="0.01" value="0.5"><small>A ← MASTER → B</small></div>
+            <div class="mixer-channel" data-mix-deck="2"><b>CH 2</b><label>HIGH <input data-mix-control="eq" data-band="high" type="range" min="0" max="1" step="0.01" value="0.5"></label><label>MID <input data-mix-control="eq" data-band="mid" type="range" min="0" max="1" step="0.01" value="0.5"></label><label>LOW <input data-mix-control="eq" data-band="low" type="range" min="0" max="1" step="0.01" value="0.5"></label><label>CFX <input data-mix-control="cfx" type="range" min="0" max="1" step="0.01" value="0.5"></label><label>LEVEL <input data-mix-control="channel_fader" type="range" min="0" max="1" step="0.01" value="0.78"></label></div>
+          </div>
+        </article>
+
+        <article class="software-panel" data-software-panel="record">
+          <header><div><small>DASHBOARD SESSION</small><strong>EVENT CAPTURE</strong></div><button class="software-close">×</button></header>
+          <div class="record-panel-body"><button id="sessionCaptureToggle">START CAPTURE</button><button id="sessionCaptureClear">CLEAR</button><span id="sessionCaptureStatus">IDLE · local event trace only</span></div>
+          <div class="record-events" id="recordEvents"></div>
+        </article>
+
+        <article class="software-panel" data-software-panel="setplan">
+          <header><div><small>PHRASE-AWARE QUEUE PLANNING</small><strong>AI SET BUILDER</strong></div><button class="software-close">×</button></header>
+          <div class="setplan-toolbar">
+            <label>LENGTH <select id="setPlanLength"><option value="4">4</option><option value="6" selected>6</option><option value="8">8</option><option value="10">10</option></select></label>
+            <button id="setPlanRebuild">REBUILD</button>
+            <button id="setPlanAppend" disabled>APPEND TO Q</button>
+            <span id="setPlanSource">SELECT A SOURCE TRACK</span>
+          </div>
+          <div class="setplan-status" id="setPlanStatus">Ready.</div>
+          <div class="setplan-rows" id="setPlanRows"></div>
+        </article>
+
+        <article class="software-panel" data-software-panel="midi">
+          <header><div><small>CONTROLLER BRIDGE</small><strong>MIDI DIAGNOSTICS</strong></div><button class="software-close">×</button></header>
+          <div class="midi-diagnostics">
+            <div><span>COMMAND SOURCE</span><strong id="diagMidiSource">—</strong><em id="diagMidiSourceState">—</em></div>
+            <div><span>FEEDBACK DESTINATION</span><strong id="diagMidiFeedback">—</strong><em id="diagMidiFeedbackState">—</em></div>
+            <div><span>MAPPING</span><strong id="diagMidiMapping">—</strong><em id="diagMidiMappingPath">—</em></div>
+            <div><span>REKORDBOX</span><strong id="diagRekordbox">—</strong><em id="diagFeedbackLast">—</em></div>
+            <div><span>FLX4 COREMIDI</span><strong id="diagPhysicalFlx4">—</strong><em id="diagPhysicalMidiPorts">—</em></div>
+            <div><span>APP EXECUTION</span><strong id="diagExecutionProof">—</strong><em id="diagExecutionEvidence">—</em></div>
+            <div><span>TWO-WAY PROOF</span><strong id="diagTwoWayProof">—</strong><em id="diagTwoWayEvidence">—</em></div>
+            <div><span>BRIDGE HEALTH</span><strong id="diagAutoAttach">—</strong><em id="diagAutoAttachDetail">—</em></div>
+            <div><span>ENDPOINT HYGIENE</span><strong id="diagEndpointHealth">—</strong><em id="diagEndpointDetail">—</em></div>
+            <div><span>PHYSICAL MIRROR</span><strong id="diagPhysicalMirror">—</strong><em id="diagPhysicalMirrorDetail">—</em></div>
+          </div>
+          <div class="midi-diag-note" id="diagMidiNote">Feedback destination armed. Waiting for Rekordbox MIDI OUT.</div>
+        </article>
+      </section>
+
+      <section class="viewport-panel">
+        <canvas id="threeCanvas"></canvas>
+        <div class="viewport-overlay top-left">
+          <div class="view-badge">REAL SCALE 482 × 272.8 × 59.2 MM</div>
+          <div class="view-help">Fixed hardware view · click illuminated pads · drag knobs and faders</div>
+        </div>
+        <div class="viewport-overlay top-right">
+          <button id="angleView">ANGLE</button>
+          <button id="topView">TOP</button>
+          <button id="frontView">FRONT</button>
+          <button id="rearView">REAR</button>
+          <button id="focusView">FULL</button>
+          <button id="resetView">RESET</button>
+        </div>
+        <div class="viewport-overlay bottom-left">
+          <span id="hoverLabel">DDJ-FLX4</span>
+        </div>
+      </section>
+
+      <aside class="fx-panel">
+        <div class="panel-title">
+          <div>
+            <span>REKORDBOX</span>
+            <strong>BEAT FX</strong>
+          </div>
+          <div class="live-pill">LIVE</div>
+        </div>
+        <div class="fx-saved-config" id="fxConfigStatus">READING REKORDBOX FX SETTINGS…</div>
+
+        <div class="fx-routing">
+          <label>VIRTUAL FX ROUTE</label>
+          <div class="segmented">
+            <button class="route active" data-unit="1">UNIT 1</button>
+            <button class="route" data-unit="2">UNIT 2</button>
+          </div>
+          <small>Routes the 3D FLX4 FX block to Rekordbox FX1 or FX2 MIDI commands.</small>
+        </div>
+
+        <div class="fx-controls">
+          <div class="control-row">
+            <span>FX SELECT</span>
+            <div class="pair">
+              <button data-action="fx-select-prev">◀</button>
+              <button data-action="fx-select-next">▶</button>
+            </div>
+          </div>
+          <div class="control-row">
+            <span>BEAT</span>
+            <div class="pair">
+              <button data-action="fx-beat-down">−</button>
+              <button data-action="fx-beat-up">+</button>
+            </div>
+          </div>
+          <div class="depth-block">
+            <span>LEVEL / DEPTH</span>
+            <div class="depth-meter"><div id="depthFill"></div></div>
+            <strong id="depthValue">50%</strong>
+          </div>
+          <button class="fx-on" id="fxToggle">BEAT FX ON / OFF</button>
+        </div>
+
+        <div class="smart-section">
+          <div class="smart-row">
+            <button id="smartCfx">SMART CFX</button>
+            <button id="smartCfxSelect">NEXT PRESET</button>
+          </div>
+          <button id="smartFader">SMART FADER</button>
+        </div>
+
+        <div class="pad-mode-block">
+          <label>PERFORMANCE PAD MODE</label>
+          <div class="pad-modes" id="padModeButtons">
+            <button data-mode="hotcue" class="active">HOT CUE</button>
+            <button data-mode="padfx1">PAD FX1</button>
+            <button data-mode="beatjump">BEAT JUMP</button>
+            <button data-mode="beatloop">BEAT LOOP</button>
+            <button data-mode="sampler">SAMPLER</button>
+          </div>
+          <small id="padModeStatus">HOT CUE mode routes all 8 physical pads.</small>
+        </div>
+
+        <div class="event-log" id="log"></div>
+      </aside>
+    </main>
+
+    <section class="browser-panel" id="browserPanel">
+      <header class="browser-header">
+        <div class="browser-title">
+          <strong>rekordbox</strong>
+          <span>COLLECTION</span>
+          <em id="librarySource">LOCAL LIBRARY</em>
+          <em id="browserLinkState" class="browser-link-state">BROWSE UNLINKED</em>
+        </div>
+        <div class="browser-tabs">
+          <button class="active" data-view="browse">BROWSE</button>
+          <button data-view="queue">QUEUE</button>
+          <button data-view="related">RELATED</button>
+          <button data-view="mixpicks">MIX PICKS</button>
+          <button data-view="history">HISTORY</button>
+        </div>
+        <div class="browser-actions">
+          <label class="browser-search"><span>⌕</span><input id="librarySearch" placeholder="Search collection" /></label>
+          <button id="browserAlign" title="Select the same track here and in Rekordbox, then click to lock relative BROWSE navigation">ALIGN RB</button>
+          <button id="libraryRefresh">REFRESH</button>
+          <button id="libraryCollapse">HIDE</button>
+        </div>
+      </header>
+      <div class="browser-body">
+        <aside class="media-browser">
+          <div class="media-label">MEDIA BROWSER</div>
+          <button class="media-item active" data-view="browse"><b>◫</b><span>Collection</span><i id="collectionCount">—</i></button>
+          <button class="media-item"><b>▤</b><span>Playlists</span></button>
+          <div class="playlist-list" id="playlistList"></div>
+          <button class="media-item" data-view="related"><b>◎</b><span>Related Tracks</span></button>
+          <button class="media-item" data-view="mixpicks"><b>✦</b><span>AI Mix Picks</span></button>
+          <button class="media-item" data-view="history"><b>↺</b><span>History</span></button>
+          <div class="history-list" id="historyList"></div>
+          <button class="media-item" data-view="queue"><b>◈</b><span>Automix / Queue</span></button>
+          <button class="media-item"><b>⌁</b><span>Explorer</span></button>
+          <div class="media-divider"></div>
+          <div class="media-section-title">COLLECTION FILTER</div>
+          <button class="filter-item active" data-filter="all">All</button>
+          <button class="filter-item" data-filter="house">House</button>
+          <button class="filter-item" data-filter="hip-hop">Hip-Hop</button>
+          <button class="filter-item" data-filter="electronic">Electronic</button>
+          <button class="filter-item" data-filter="recent">Recently Added</button>
+        </aside>
+
+        <section class="collection-view">
+          <div class="collection-toolbar">
+            <div><strong id="collectionTitle">Collection</strong><span id="trackCount">0 Tracks</span></div>
+            <div class="collection-pills"><button id="listViewButton" class="active">LIST</button><button id="artworkViewButton">ARTWORK</button><button id="filterViewButton">FILTER</button></div>
+          </div>
+          <div class="advanced-filter-bar" id="advancedFilterBar">
+            <label>BPM MIN <input id="filterBpmMin" type="number" min="40" max="250" step="1" placeholder="—"></label>
+            <label>BPM MAX <input id="filterBpmMax" type="number" min="40" max="250" step="1" placeholder="—"></label>
+            <label>CAMELOT <select id="filterCamelot"><option value="">ALL KEYS</option></select></label>
+            <label>RATING <select id="filterRating"><option value="0">ALL</option><option value="1">1+ ★</option><option value="2">2+ ★</option><option value="3">3+ ★</option><option value="4">4+ ★</option><option value="5">5 ★</option></select></label>
+            <button id="clearAdvancedFilters">CLEAR</button>
+          </div>
+          <div class="collection-content">
+            <div class="track-table" id="trackTable">
+              <div class="track-head">
+                <span>#</span><span>Preview</span><span>Art</span><span data-sort="title">Track Title</span><span data-sort="artist">Artist</span><span data-sort="genre">Genre</span><span data-sort="bpm">BPM</span><span data-sort="key">Key</span><span data-sort="length">Time</span><span></span>
+              </div>
+              <div class="track-rows" id="trackRows"></div>
+            </div>
+            <div class="artwork-grid hidden" id="artworkGrid"></div>
+          </div>
+        </section>
+
+        <aside class="queue-panel">
+          <div class="queue-head">
+            <div><button id="queueSelectedButton" title="Add selected track to queue">Q</button><button id="setBuilderButton" class="set-plan-open" title="Build a phrase-aware set plan">AI</button><span>NEXT UP</span></div>
+            <b id="queueCount">0</b>
+          </div>
+          <div class="queue-now">
+            <span>ACTIVE SOURCE</span>
+            <strong id="queueSourceLabel">AUTOMIX + DASHBOARD Q</strong>
+          </div>
+          <div class="queue-rows" id="queueRows"></div>
+          <div class="queue-foot">Q = queue · ↑/↓ = browse · 1/2 = load deck · double-click = active deck</div>
+        </aside>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div><span class="dot good"></span> FLX4 original 3D textures · fixed viewpoint</div>
+      <div><span class="dot good"></span> MCP</div>
+      <div><span class="dot good"></span> WebSocket 18765</div>
+      <div><span class="dot good"></span> HTTP 18766</div>
+      <div class="footer-note">Official FLX4 control map + local MIDI bridge</div>
+    </footer>
+  </div>
+
+  <button class="sampler-open" id="flxSamplerOpen" type="button"
+          aria-controls="flxSamplerCompanion" aria-expanded="false">
+    <span class="sampler-open-indicator"></span> SAMPLER APPS / ABLETON
+  </button>
+  <aside class="sampler-companion" id="flxSamplerCompanion" hidden>
+    <header>
+      <div><small>REKORDBOX DJ + EXISTING SAMPLERS</small><strong>SAMPLER COMPANION</strong></div>
+      <button id="flxSamplerClose" type="button" aria-label="Minimize sampler companion">−</button>
+    </header>
+    <p>Keep DJing in rekordbox while your existing sampler apps run alongside it. Open an app here or send the 3D controller's performance pads to its Ableton instrument track.</p>
+    <button type="button" id="flxConnectRB">CONNECT REKORDBOX CONTROL BRIDGE</button>
+    <div class="companion-subhead">PERFORMANCE PAD DESTINATION</div>
+    <div class="companion-routes" id="flxPadRoutes" role="group" aria-label="Performance pad MIDI route">
+      <button type="button" data-flx-route="rekordbox" class="selected">REKORDBOX</button>
+      <button type="button" data-flx-route="maschine">MASCHINE LAB</button>
+      <button type="button" data-flx-route="vintage">VINTAGE AKAI</button>
+      <button type="button" data-flx-route="asr10">ASR-10</button>
+    </div>
+    <div class="companion-connection" id="flxRouteStatus">Rekordbox performance pad mapping selected.</div>
+    <div class="companion-subhead">YOUR INSTALLED SAMPLERS</div>
+    <div class="companion-apps" id="flxSamplerApps">
+      <div class="companion-loading">Checking installed sampler apps…</div>
+    </div>
+    <div class="companion-subhead">MIDI / AUDIO</div>
+    <div class="companion-detail" id="flxAbletonStatus">Checking virtual Ableton MIDI output…</div>
+    <button type="button" id="flxAudioCheck">CHECK FLX4 AUDIO DEVICE</button>
+    <div class="companion-detail" id="flxAudioStatus">Output routing stays under your control in Ableton and each sampler's audio settings.</div>
+    <p class="companion-note">In Ableton, enable Track for <b>FLX4 Live 2D to Ableton</b> and load the chosen sampler AU/VST3 on a monitored MIDI track. MASCHINE LAB and Vintage use MIDI notes 36–51; ASR-10 plays notes 60–75 by default. Select MIDI input channel 1, 2, or 3 for the respective instrument. The physical FLX4 may keep controlling rekordbox; forwarding its hardware pad presses also requires the FLX4 to expose a separate MIDI input.</p>
+  </aside>
+
+  <script src="./sampler-companion.js" defer></script>
+  <script type="module" src="./realistic3d.js"></script>
+</body>
+</html>
