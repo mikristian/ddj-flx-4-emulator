@@ -11,11 +11,29 @@ Two experimental desktop control interfaces for a DDJ-FLX4-inspired workflow, in
 
 Both interfaces have been compared against their installed applications' **main authored JavaScript files**, with matching SHA-256 at the audit date. Matching scripts do not imply matching packaged assets, working hardware input or complete installed-app reproduction.
 
-## Screenshot of the source-only browser preview
+## Interface gallery (actual staged browser captures)
+
+### FLX4 LIVE 2D performance surface
+
+![FLX4 Live 2D controller with dual virtual decks and mixer](docs/screenshots/flx4-live-performance.png)
+
+### FLX4 LIVE drum lab and bridge status
+
+![Full FLX4 Live 2D source interface showing all sixteen empty drum slots](docs/screenshots/flx4-live-drum-lab.png)
+
+The above screenshots show the **actual staged `FLX4Live2D/index.html` interface** rendered by headless Google Chrome on November 14, 2026, with no external samples or connected controller. The visible 'bridge live' indicator is the interface's own local bridge state; it does **not** establish communication with Rekordbox, Ableton or physical hardware. Empty drum pads are intentional.
+
+### Flat 2D controller overlay
 
 ![Actual FLX4 Flat 2D browser UI without the omitted rights-restricted controller photo](docs/screenshots/flx4-flat-source-only.png)
 
 This is an **actual screenshot of the staged Flat 2D HTML/CSS/JS interface** in an offline/disconnected state. The large black region is intentional: the original product photograph/background has been excluded for redistribution rights, leaving only the independently authored control overlays. It is not a screenshot of the complete installed native app and does not demonstrate connected hardware or audio playback.
+
+### Optional photo/3D fixed-view shell (restricted asset omitted)
+
+![Real fixed-view source shell with the missing licensed photo and 3D controller texture](docs/screenshots/flx4-live-realistic-source-preview.png)
+
+This screenshot captures the actual `FLX4Live2D/realistic.html` shell. Its central controller region remains blank because the original licensed photographs, 3D model textures and complete runtime dependencies are omitted. It is **not** a working 3D controller demonstration. For the functional source-based browser layout, see the performance surface gallery above.
 
 ## Explore the source
 
