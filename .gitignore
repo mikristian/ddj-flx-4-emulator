@@ -43,3 +43,6 @@ productions/
 sounds/
 assets/
 .cache/
+
+# Local screenshot originals and private audit
+docs/audit-local/

@@ -11,29 +11,23 @@ Two experimental desktop control interfaces for a DDJ-FLX4-inspired workflow, in
 
 Both interfaces have been compared against their installed applications' **main authored JavaScript files**, with matching SHA-256 at the audit date. Matching scripts do not imply matching packaged assets, working hardware input or complete installed-app reproduction.
 
-## Interface gallery (actual staged browser captures)
+## Installed native application evidence (14 November 2026)
 
-### FLX4 LIVE 2D performance surface
+The installed Mac bundles were launched and the actual window surfaces captured using macOS `screencapture` by window ID. These are **cropped native application window captures**, rather than stand-in HTML mockups. The strips show only the native title bar, authored controls and status areas. Hardware photographs, third-party controller artwork and any visible local media details are covered in the public copies because redistribution rights were not established. The unaltered audit originals remain local and excluded from Git.
 
-![FLX4 Live 2D controller with dual virtual decks and mixer](docs/screenshots/flx4-live-performance.png)
+### Installed FLX4 Flat 2D, version 1.1.1
 
-### FLX4 LIVE drum lab and bridge status
+![Actual installed Flat 2D macOS application, with controller photo region concealed](docs/screenshots/flx4-flat-installed-ui-redacted.png)
 
-![Full FLX4 Live 2D source interface showing all sixteen empty drum slots](docs/screenshots/flx4-live-drum-lab.png)
+The app window identifies **FLX4 Flat 2D — rekordbox + Existing Samplers**. Its native UI includes performance routing and a sampler companion strip. The controller image area is intentionally concealed in this public documentation capture.
 
-The above screenshots show the **actual staged `FLX4Live2D/index.html` interface** rendered by headless Google Chrome on November 14, 2026, with no external samples or connected controller. The visible 'bridge live' indicator is the interface's own local bridge state; it does **not** establish communication with Rekordbox, Ableton or physical hardware. Empty drum pads are intentional.
+### Installed FLX4 Live 2D, version 0.3.0, fixed 3D view
 
-### Flat 2D controller overlay
+![Actual installed Live 2D fixed 3D macOS application, with original hardware textures and media details concealed](docs/screenshots/flx4-fixed3d-installed-ui-redacted.png)
 
-![Actual FLX4 Flat 2D browser UI without the omitted rights-restricted controller photo](docs/screenshots/flx4-flat-source-only.png)
+The installed app's window title specifies **Fixed 3D / rekordbox + Existing Samplers**. The 3D controller panel uses withheld photographs/textures, so only the app's surrounding authored controls are shown here. Despite its name, `FLX4 Live 2D` uses a fixed camera onto a 3D scene. The available source also exposes `realistic.html` for browser rendering, while `index.html` is another browser interface; they must not be conflated with an independently installed third macOS application.
 
-This is an **actual screenshot of the staged Flat 2D HTML/CSS/JS interface** in an offline/disconnected state. The large black region is intentional: the original product photograph/background has been excluded for redistribution rights, leaving only the independently authored control overlays. It is not a screenshot of the complete installed native app and does not demonstrate connected hardware or audio playback.
-
-### Optional photo/3D fixed-view shell (restricted asset omitted)
-
-![Real fixed-view source shell with the missing licensed photo and 3D controller texture](docs/screenshots/flx4-live-realistic-source-preview.png)
-
-This screenshot captures the actual `FLX4Live2D/realistic.html` shell. Its central controller region remains blank because the original licensed photographs, 3D model textures and complete runtime dependencies are omitted. It is **not** a working 3D controller demonstration. For the functional source-based browser layout, see the performance surface gallery above.
+**Gallery limits:** These screenshots prove the installed app windows launched and document the surrounding UI, but cannot show the original hardware rendering publicly without clarified asset rights. No connected DDJ-FLX4 hardware or working DAW playback was verified in this screenshot audit. There is no verified standalone third 3D `.app` bundle in the scanned user Applications directory.
 
 ## Explore the source
 
