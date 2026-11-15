@@ -11,6 +11,12 @@ Two experimental desktop control interfaces for a DDJ-FLX4-inspired workflow, in
 
 Both interfaces have been compared against their installed applications' **main authored JavaScript files**, with matching SHA-256 at the audit date. Matching scripts do not imply matching packaged assets, working hardware input or complete installed-app reproduction.
 
+## Screenshot of the source-only browser preview
+
+![Actual FLX4 Flat 2D browser UI without the omitted rights-restricted controller photo](docs/screenshots/flx4-flat-source-only.png)
+
+This is an **actual screenshot of the staged Flat 2D HTML/CSS/JS interface** in an offline/disconnected state. The large black region is intentional: the original product photograph/background has been excluded for redistribution rights, leaving only the independently authored control overlays. It is not a screenshot of the complete installed native app and does not demonstrate connected hardware or audio playback.
+
 ## Explore the source
 
 The HTML is readable without an installed app. To inspect the browser UI, serve each app directory locally:
