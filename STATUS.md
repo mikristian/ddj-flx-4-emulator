@@ -15,3 +15,8 @@ Removed all four prior screenshots and README image references after the user re
 ## Distinct browser preview (2026-11-14 follow-up)
 
 Captured and visually inspected `docs/screenshots/flx4-browser-2d-source-only.png` directly from `FLX4Live2D/index.html` in headless Chrome. This is the actual source UI: two virtual decks, mixer, performance pads, drum lab and connection panel. No hardware image or licensed controller asset is incorporated, and the photo-view link was not followed. It is not an installed-app capture or a 3D model screenshot. Also tested `realistic.html` using a local HTTP server: absent withheld textures, its 3D model panel rendered blank. It cannot presently supply an accurate source-only geometry screenshot without additional rendering/asset work.
+
+
+## Texture-free 3D geometry fallback (2026-11-14)
+
+The blank `realistic.html` preview was traced primarily to missing Three.js runtime dependencies (`three.module.js`, `three.core.js`) in the source export. Restored the specific Three.js r180 MIT modules with attribution and added explicit `?geometry=1` mode to `realistic3d.js`. Geometry mode avoids all manufacturer image texture loads and substitutes authored opaque geometry/materials for chassis, jog/pad/round-button regions. Captured, visually checked and committed genuine Chrome screenshot `docs/screenshots/flx4-3d-source-only-geometry.png`. This is a simplified source-only browser prototype, not installed app visual parity. Existing installed apps and their source were not modified.

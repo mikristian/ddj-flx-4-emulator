@@ -1542,6 +1542,15 @@ window.addEventListener("keydown",e=>{
 });
 loadLibrary();loadControllerSettings();
 
+// Public source preview: show procedural hardware meshes without manufacturer imagery.
+// The installed application uses the normal path (no geometry query parameter).
+const geometryOnly=new URLSearchParams(window.location.search).has("geometry");
+if(geometryOnly){
+  const hint=document.createElement("div");
+  hint.textContent="SOURCE-ONLY 3D GEOMETRY · NO CONTROLLER PHOTO OR TEXTURES";
+  Object.assign(hint.style,{position:"absolute",left:"50%",top:"10px",transform:"translateX(-50%)",zIndex:"7",font:"bold 10px system-ui",letterSpacing:".1em",color:"#d8e5f0",background:"#142235",padding:"7px 12px",border:"1px solid #46617b",borderRadius:"5px",pointerEvents:"none"});
+  document.querySelector(".viewport-panel")?.appendChild(hint);
+}
 // THREE scene
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
@@ -1549,7 +1558,7 @@ renderer.shadowMap.enabled=true;
 renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.12;
+renderer.toneMappingExposure=geometryOnly?1.7:1.12;
 
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(0x060708);
@@ -1582,8 +1591,8 @@ floor.rotation.x=-Math.PI/2;floor.position.y=-3.12;floor.receiveShadow=true;scen
 const grid=new THREE.GridHelper(100,50,0x20262c,0x0e1216);grid.position.y=-3.09;grid.material.opacity=.22;grid.material.transparent=true;scene.add(grid);
 
 const materials={
-  body:new THREE.MeshPhysicalMaterial({color:0x111315,roughness:.66,metalness:.28,clearcoat:.18}),
-  inset:new THREE.MeshStandardMaterial({color:0x090a0c,roughness:.72,metalness:.32}),
+  body:new THREE.MeshPhysicalMaterial({color:geometryOnly?0x343d48:0x111315,roughness:.66,metalness:.28,clearcoat:.18}),
+  inset:new THREE.MeshStandardMaterial({color:geometryOnly?0x27303a:0x090a0c,roughness:.72,metalness:.32}),
   metal:new THREE.MeshPhysicalMaterial({color:0x25282c,roughness:.32,metalness:.88,clearcoat:.38}),
   ring:new THREE.MeshStandardMaterial({color:0x41464c,roughness:.28,metalness:.92}),
   white:new THREE.MeshStandardMaterial({color:0xdde2e7,roughness:.5,metalness:.05}),
@@ -1597,13 +1606,15 @@ const controller=new THREE.Group(); controller.rotation.x=0; scene.add(controlle
 // The official low-front image shows a ~39.6 mm chassis band; the remaining
 // height up to the official 59.2 mm comes from raised jogs/knobs/faders.
 const body=new THREE.Mesh(new RoundedBoxGeometry(48.2,3.96,27.28,8,.82),materials.body);
+if(geometryOnly)body.material=new THREE.MeshBasicMaterial({color:0x354452});
 body.position.y=-.88;body.castShadow=true;body.receiveShadow=true;controller.add(body);
-const topPanel=new THREE.Mesh(new RoundedBoxGeometry(47.92,.22,27.0,7,.68),materials.inset);
+const topPanel=new THREE.Mesh(new RoundedBoxGeometry(47.92,.22,27.0,7,.68),geometryOnly?new THREE.MeshBasicMaterial({color:0x495869}):materials.inset);
 topPanel.position.y=1.17;controller.add(topPanel);
 
 // A high-resolution, straight-on FLX4 face reference is used as the panel skin.
 // All live 3D controls below sit on top of this skin, preserving the real printed
 // legends, panel divisions, branding and spacing while still giving controls depth.
+if(!geometryOnly){
 const faceTexture=new THREE.TextureLoader().load("./assets/pioneer-ddj-flx4-panel-clean.png");
 faceTexture.colorSpace=THREE.SRGBColorSpace;
 faceTexture.anisotropy=8;
@@ -1621,6 +1632,8 @@ function addChassisBand(url,z,flip=false){
 }
 addChassisBand("./assets/pioneer-ddj-flx4-front-band.png",13.655,false);
 addChassisBand("./assets/pioneer-ddj-flx4-rear-band.png",-13.655,true);
+
+}
 
 // Low-profile rubber feet remain true 3D; I/O itself comes from the official bands.
 for(const x of [-20.5,20.5]) for(const z of [-11.4,11.4]){
@@ -1671,7 +1684,14 @@ function makePhotoCircleButton(id,label,x,z,r=.7,meta={},accent=0xff861d){
   const hit=new THREE.Mesh(new THREE.CylinderGeometry(r,r,.07,48),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));
   const glowMat=new THREE.MeshBasicMaterial({color:accent,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending});
   const glow=new THREE.Mesh(new THREE.TorusGeometry(r*.79,.055,10,48),glowMat);glow.rotation.x=Math.PI/2;glow.position.y=.055;
-  g.add(hit,glow);registerHit(hit,g,id,{type:"button",label,...meta});
+  g.add(hit,glow);
+  if(geometryOnly){
+    const cap=new THREE.Mesh(new THREE.CylinderGeometry(r*.92,r*.92,.12,40),new THREE.MeshStandardMaterial({color:0x202934,roughness:.5}));
+    cap.position.y=.06;g.add(cap);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(r*.83,.045,8,40),new THREE.MeshBasicMaterial({color:accent}));
+    rim.rotation.x=Math.PI/2;rim.position.y=.13;g.add(rim);
+  }
+  registerHit(hit,g,id,{type:"button",label,...meta});
   g.userData.kind="button";g.userData.baseY=g.position.y;g.userData.flashTarget=glow;g.userData.flashAccent=accent;g.userData.flashOverlay=true;return g;
 }
 function makePhotoPad(id,deck,index,x,z,w=2.3,d=1.65){
@@ -1679,7 +1699,14 @@ function makePhotoPad(id,deck,index,x,z,w=2.3,d=1.65){
   const hit=new THREE.Mesh(new THREE.BoxGeometry(w,.06,d),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));
   const glowMat=new THREE.MeshBasicMaterial({color:0xff7a18,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending});
   const glow=new THREE.Mesh(new RoundedBoxGeometry(w,.025,d,3,.11),glowMat);glow.position.y=.045;
-  g.add(hit,glow);registerHit(hit,g,id,{type:"pad",label:"PERFORMANCE PAD "+(index+1),deck,pad:index});
+  g.add(hit,glow);
+  if(geometryOnly){
+    const rim=new THREE.Mesh(new RoundedBoxGeometry(w-.08,.10,d-.08,3,.10),new THREE.MeshBasicMaterial({color:0xff862c}));
+    rim.position.y=.09;g.add(rim);
+    const pad=new THREE.Mesh(new RoundedBoxGeometry(w-.22,.12,d-.22,3,.09),new THREE.MeshStandardMaterial({color:0x19232e,roughness:.72}));
+    pad.position.y=.15;g.add(pad);
+  }
+  registerHit(hit,g,id,{type:"pad",label:"PERFORMANCE PAD "+(index+1),deck,pad:index});
   g.userData.kind="pad";g.userData.flashTarget=glow;g.userData.flashAccent=0xff7a18;g.userData.flashOverlay=true;return g;
 }
 function makeKnob(id,label,x,z,meta={},value=.5,r=.55){
@@ -1728,10 +1755,13 @@ function makeJog(deck,x,z){
   housing.castShadow=true;g.add(housing);
   const fixedLip=new THREE.Mesh(new THREE.TorusGeometry(7.10,.075,12,160),new THREE.MeshStandardMaterial({color:0x252a2e,metalness:.72,roughness:.30}));
   fixedLip.rotation.x=Math.PI/2;fixedLip.position.y=.285;g.add(fixedLip);
+  if(!geometryOnly){
   const housingTexture=new THREE.TextureLoader().load(deck===1?"./assets/pioneer-jog-housing-left.png":"./assets/pioneer-jog-housing-right.png");
   housingTexture.colorSpace=THREE.SRGBColorSpace;housingTexture.anisotropy=16;
   const housingPhoto=new THREE.Mesh(new THREE.CircleGeometry(7.12,160),new THREE.MeshBasicMaterial({map:housingTexture,transparent:true,toneMapped:false,alphaTest:.02,depthWrite:false}));
   housingPhoto.rotation.x=-Math.PI/2;housingPhoto.position.y=.326;g.add(housingPhoto);
+
+  }
 
   const rotor=new THREE.Group();rotor.position.set(0,.01,0);g.add(rotor);
   // Pioneer specifies the FLX4 jog wheel at 111.6 mm. The photographed fixed
@@ -1752,9 +1782,12 @@ function makeJog(deck,x,z){
     const tick=new THREE.Mesh(new THREE.BoxGeometry(i%4===0?.080:.046,.018,i%4===0?.36:.24),tickMat);
     tick.position.set(Math.sin(a)*r,.354,Math.cos(a)*r);tick.rotation.y=-a;rotor.add(tick);
   }
+  if(!geometryOnly){
   const logoTexture=new THREE.TextureLoader().load("./assets/pioneer-jog-center.png");logoTexture.colorSpace=THREE.SRGBColorSpace;logoTexture.anisotropy=16;
   const logo=new THREE.Mesh(new THREE.CircleGeometry(1.61,96),new THREE.MeshBasicMaterial({map:logoTexture,transparent:true,toneMapped:false,alphaTest:.02}));
   logo.rotation.x=-Math.PI/2;logo.position.y=.360;rotor.add(logo);
+
+  }
   const indexMark=new THREE.Mesh(new THREE.BoxGeometry(.12,.020,.54),new THREE.MeshBasicMaterial({color:0xf2f4f5}));
   indexMark.position.set(0,.362,-4.80);rotor.add(indexMark);
   const hit=new THREE.Mesh(new THREE.CylinderGeometry(7.08,7.08,.04,96),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));

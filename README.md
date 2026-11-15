@@ -33,7 +33,21 @@ The installed app's window title specifies **Fixed 3D / rekordbox + Existing Sam
 
 This is a genuine Google Chrome screenshot of [`FLX4Live2D/index.html`](FLX4Live2D/index.html), rendered locally from the published HTML/CSS/JS with no external controller photos or proprietary textures. It is a **browser source preview**, not a screenshot of either installed `.app` window, and it is distinct from the fixed-camera 3D view in `realistic.html`. The browser was offline from rekordbox and Ableton, with no samples loaded. The visible WebAudio-ready indicator is only the browser interface's status display, not a test of audible playback.
 
-The separate [`FLX4Live2D/realistic.html`](FLX4Live2D/realistic.html) 3D browser source was also launched via a local HTTP server with the withheld original textures absent. Its Three.js controller panel rendered blank; consequently, no 3D geometry image is presented as a working controller. Its 3D JavaScript contains procedural chassis, knobs, buttons, jog and fader geometry, but the standalone visual source cannot currently recreate the installed model without resolving the missing texture/model display path and redistribution rights.
+### Procedural 3D controller prototype (source-only geometry fallback)
+
+![Browser rendering of the authored three-dimensional FLX4 inspired controller chassis, jogs, mixer, knobs, and performance pads without manufacturer textures](docs/screenshots/flx4-3d-source-only-geometry.png)
+
+This image is a **genuine browser capture** of [`FLX4Live2D/realistic.html?geometry=1`](FLX4Live2D/realistic.html) running with its procedural Three.js mesh fallback. It uses authored geometry and plain software materials for the chassis, pads, and buttons. No manufacturer photographs, controller skins, logos, texture maps, or local music files were loaded. This is a simplified, unbranded **source-only 3D prototype**, **not the full installed Mac application**, original manufacturer render, hardware verification, or evidence of exact visual parity. The real hardware dimensions inform layout, but labels, printed markings, and photorealistic details are intentionally absent.
+
+Run the 3D prototype locally from the repository root:
+
+```sh
+cd FLX4Live2D
+python3 -m http.server 8080
+# open http://127.0.0.1:8080/realistic.html?geometry=1
+```
+
+The required MIT-licensed Three.js JavaScript modules are now bundled under `FLX4Live2D/vendor/` with attribution. The ordinary `realistic.html` page still references excluded manufacturer art and remains visually incomplete without those authorized assets; the explicit `?geometry=1` path instead uses procedural meshes only.
 
 **Gallery limits:** These screenshots prove the installed app windows launched and document the surrounding UI, but cannot show the original hardware rendering publicly without clarified asset rights. No connected DDJ-FLX4 hardware or working DAW playback was verified in this screenshot audit. There is no verified standalone third 3D `.app` bundle in the scanned user Applications directory.
 
