@@ -1,12 +1,14 @@
 # FLX4 Live 2D — fixed-view rekordbox controller + existing samplers
 
+**Pictured GitHub version: v0.3.0, Fixed 3D.** [See the actual November 14 Mac app screenshot](../docs/screenshots/flx4-live-fixed-3d-v0.3.0.png). This is the three-dimensional controller shown in the main repository gallery. The `realistic.html` interface is the app entry point; the separate `index.html` source demo is not the installed screenshot.
+
 This is a **separate macOS app** using the *same actual photo-textured Three.js DDJ-FLX4 model* as the original dashboard. The chassis, jogs, texture maps, lighting, physical depth, interactive transport buttons, pads, mixer and faders remain 3D. **"2D" means the camera is fixed**: the user cannot orbit, spin, pan or zoom the board. It is not the old vector redraw.
 
-The original `../dashboard.html`, `../dashboard3d.js` and `../dashboard.css` are untouched. The app no longer contains Drum Lab, drum kits or a second synthesized sampler. Its collapsed **SAMPLER APPS / ABLETON** panel works with the existing MASCHINE LAB, Vintage Sampler Lab and ASR-10 projects.
+The original upstream dashboard remains separate from this published source snapshot. The installed app no longer contains Drum Lab, drum kits or a second synthesized sampler. Its collapsed **SAMPLER APPS / ABLETON** panel connects to existing MASCHINE LAB, Vintage Sampler Lab and ASR-10 projects.
 
 ## Launch
 
-The installed application is **`~/Applications/FLX4 Live 2D.app`**. Its WebKit view opens the self-contained **`http://127.0.0.1:18767/realistic.html`** local interface and starts the isolated MIDI/HTTP bridge with `rekordbox_mcp/.venv/bin/python`. Its source is `FLX4Live2D/`; run `native/package_mac_app.sh` to rebuild a code-signed Mac bundle. No CDNs or remote asset services are required.
+The installed application is **`~/Applications/FLX4 Live 2D.app`**. Its WebKit view opens **`http://127.0.0.1:18767/realistic.html`** and starts an isolated local MIDI/HTTP bridge. Its source is `FLX4Live2D/`; run `native/package_mac_app.sh` from the full development environment to rebuild a signed Mac bundle. The original manufacturer-style controller textures visible in the screenshot are intentionally excluded from this GitHub repo, so the fully textured version cannot be rebuilt from the public source alone. For an independent browser geometry preview, use `realistic.html?geometry=1`.
 
 The original 3D dashboard is still available in the existing rekordbox project. FLX4 Live 2D uses the same WebSocket MIDI protocol (127.0.0.1:18765) for DJ controls, and proxies read-only library/track endpoints through 127.0.0.1:18766. No changes are made to rekordbox mapping or macOS audio setup.
 

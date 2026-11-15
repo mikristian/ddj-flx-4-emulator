@@ -1,10 +1,12 @@
 # Third party notices
 
-This source snapshot does not redistribute third party executable bundles, sample libraries, recorded tracks, Pioneer/AlphaTheta artwork, DDJ-FLX4 photos or textures, or JUCE framework sources.
+This source snapshot does not redistribute third-party executable bundles, sample libraries, recorded tracks, standalone Pioneer/AlphaTheta controller artwork or texture maps, or JUCE framework sources.
 
 Dependencies such as JUCE 8, Rust crates, Python packages, JavaScript browser libraries and macOS frameworks are obtained separately under their respective licenses. Review the corresponding dependency manifests and upstream license terms before redistribution. Product names (including Rekordbox, DDJ-FLX4, Akai, and ASR-10) are used to describe compatibility only; no trademark endorsement is asserted.
 
-Current status: **source publication candidate**. Core source verification is documented in README. Packaging and complete runtime parity require their declared external dependencies and authorized visual/audio assets.
+The two original screenshots in `docs/screenshots/` were supplied by the user for documenting the two installed applications. Those screenshots visibly include controller graphics, product branding, and interface views. They are documentation of the user-visible software, not separately licensed texture packs or permission to extract, modify, or redistribute any underlying manufacturer art. All third-party marks remain the property of their owners.
+
+Current status: **published source for both pictured app versions, with screenshot evidence**. Full self-contained packaging and complete visual/runtime parity require external dependencies and authorized controller art. A screenshot is not proof of physical MIDI routing or audible output.
 
 
 ## Bundled Three.js runtime

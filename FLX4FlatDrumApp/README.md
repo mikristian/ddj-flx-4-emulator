@@ -1,5 +1,7 @@
 # FLX4 Flat 2D — original flat controller, rebuilt
 
+**Pictured GitHub version: v1.1.1.** [See the actual November 14 Mac app screenshot](../docs/screenshots/flx4-flat-2d-v1.1.1.png). This is the photo-backed, front-on controller shown in the main repository gallery, not the separate fixed-camera 3D edition. The source below implements its controls; the controller photograph itself is not included in the public repository.
+
 **Release: FLX4 Flat 2D v1.1.1**, installed separately at `~/Applications/FLX4 Flat 2D.app`.
 
 **v1.1.1 single-slider cleanup:** The original controller photograph contained

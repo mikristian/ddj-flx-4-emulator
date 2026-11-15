@@ -1,82 +1,55 @@
-# DDJ-FLX4 Apps
+# DDJ-FLX4 emulator · two Mac applications
 
-Two experimental desktop control interfaces for a DDJ-FLX4-inspired workflow, including browser UI code and macOS/Python bridge source. These source snapshots document software development work; a connected physical controller and DAW are needed to validate actual routing.
+This repository contains the source for the **two FLX4 macOS apps shown in the screenshots below**. They are separate projects, with their own Swift window, controller interface, and local MIDI/HTTP bridge. Both were developed for an FLX4-inspired workflow with rekordbox and existing sampler applications.
 
-## Projects
+These are the two **original, full-window screenshots captured on the user's Mac on November 14, 2026 at 11:16 PM**. They replace the previous redacted and source-prototype gallery. The two screenshots show the actual installed apps; they are not UI mockups or generated previews.
 
-| Folder | Interface | What is available | Required for full fidelity |
+## 1. FLX4 Live 2D · Fixed 3D · v0.3.0
+
+![FLX4 Live 2D fixed 3D Mac app showing decks, waveform displays, realistic controller, knobs, faders, performance pads, and the sampler panel](docs/screenshots/flx4-live-fixed-3d-v0.3.0.png)
+
+**[View the FLX4 Live 2D source](FLX4Live2D/)** · Native app: `FLX4 Live 2D.app` · Bundle: `com.mikristian.flx4live2d`
+
+The fixed-camera **Three.js controller** has 3D depth, jog wheels, mixer controls, pads, LED feedback, two deck/track displays, and a collapsible **SAMPLER APPS / ABLETON** section. The window says “Fixed 3D” because the controller is rendered in 3D with its camera locked. This is the version pictured in the first screenshot.
+
+The app's entry point is [`FLX4Live2D/realistic.html`](FLX4Live2D/realistic.html), driven by [`realistic3d.js`](FLX4Live2D/realistic3d.js), [`sampler-companion.js`](FLX4Live2D/sampler-companion.js), [`bridge.py`](FLX4Live2D/bridge.py), and the native [Swift window](FLX4Live2D/native/FLX4Live2D.swift). The separate `index.html` browser experiment is **not** the pictured Mac app. The source also contains a simplified asset-free `realistic.html?geometry=1` preview for development.
+
+## 2. FLX4 Flat 2D · v1.1.1
+
+![FLX4 Flat 2D Mac app with front-on controller image, working control hotspots, mixer, jog wheels, pads, Rekordbox route and sampler companion](docs/screenshots/flx4-flat-2d-v1.1.1.png)
+
+**[View the FLX4 Flat 2D source](FLX4FlatDrumApp/)** · Native app: `FLX4 Flat 2D.app` · Bundle: `com.mikristian.flx4flat2d`
+
+The **flat, front-facing controller** uses aligned 2D control hotspots over a controller panel, with interactive jogs, performance pads, EQ/FX controls, channel faders and crossfader. Version 1.1.1 corrected double-rendered fader handles. The UI shows the performance route, Rekordbox and MIDI states, and a collapsible sampler companion.
+
+Its entry point is [`FLX4FlatDrumApp/ui/index.html`](FLX4FlatDrumApp/ui/index.html), with [`ui/app.js`](FLX4FlatDrumApp/ui/app.js), [`ui/style.css`](FLX4FlatDrumApp/ui/style.css), [`native/FLX4LiveBridge.py`](FLX4FlatDrumApp/native/FLX4LiveBridge.py), and the native [Swift window](FLX4FlatDrumApp/native/FLX4Flat2D.swift).
+
+## Source and version map
+
+| App visible above | Authoritative source folder | macOS packaging script | Captured app version |
 | --- | --- | --- | --- |
-| [`FLX4FlatDrumApp/`](FLX4FlatDrumApp/) | Flat, photo-aligned pad/drum overlay | HTML/CSS/JS controls, Swift wrapper, Python bridge and crossfader/control checks | Rights-cleared controller background art and a configured MIDI/audio environment |
-| [`FLX4Live2D/`](FLX4Live2D/) | 3D and sampler-companion views | Browser scenes, control scripting, Swift wrapper and Python bridge | Rights-cleared images/textures, user-provided sounds and configured DAW/controller |
+| Fixed-camera 3D controller | [`FLX4Live2D/`](FLX4Live2D/) | [`native/package_mac_app.sh`](FLX4Live2D/native/package_mac_app.sh) | **0.3.0** |
+| Flat 2D controller | [`FLX4FlatDrumApp/`](FLX4FlatDrumApp/) | [`native/package_flat.sh`](FLX4FlatDrumApp/native/package_flat.sh) | **1.1.1** |
 
-Both interfaces have been compared against their installed applications' **main authored JavaScript files**, with matching SHA-256 at the audit date. Matching scripts do not imply matching packaged assets, working hardware input or complete installed-app reproduction.
-
-## Installed native application evidence (14 November 2026)
-
-The installed Mac bundles were launched and the actual window surfaces captured using macOS `screencapture` by window ID. These are **cropped native application window captures**, rather than stand-in HTML mockups. The strips show only the native title bar, authored controls and status areas. Hardware photographs, third-party controller artwork and any visible local media details are covered in the public copies because redistribution rights were not established. The unaltered audit originals remain local and excluded from Git.
-
-### Installed FLX4 Flat 2D, version 1.1.1
-
-![Actual installed Flat 2D macOS application, with controller photo region concealed](docs/screenshots/flx4-flat-installed-ui-redacted.png)
-
-The app window identifies **FLX4 Flat 2D — rekordbox + Existing Samplers**. Its native UI includes performance routing and a sampler companion strip. The controller image area is intentionally concealed in this public documentation capture.
-
-### Installed FLX4 Live 2D, version 0.3.0, fixed 3D view
-
-![Actual installed Live 2D fixed 3D macOS application, with original hardware textures and media details concealed](docs/screenshots/flx4-fixed3d-installed-ui-redacted.png)
-
-The installed app's window title specifies **Fixed 3D / rekordbox + Existing Samplers**. The 3D controller panel uses withheld photographs/textures, so only the app's surrounding authored controls are shown here. Despite its name, `FLX4 Live 2D` uses a fixed camera onto a 3D scene. The available source also exposes `realistic.html` for browser rendering, while `index.html` is another browser interface; they must not be conflated with an independently installed third macOS application.
-
-### Separate browser-only 2D performance interface (source preview)
-
-![Actual browser rendering of the independently authored FLX4 Live 2D source with virtual decks, mixer, pads, drum lab, and connections panel](docs/screenshots/flx4-browser-2d-source-only.png)
-
-This is a genuine Google Chrome screenshot of [`FLX4Live2D/index.html`](FLX4Live2D/index.html), rendered locally from the published HTML/CSS/JS with no external controller photos or proprietary textures. It is a **browser source preview**, not a screenshot of either installed `.app` window, and it is distinct from the fixed-camera 3D view in `realistic.html`. The browser was offline from rekordbox and Ableton, with no samples loaded. The visible WebAudio-ready indicator is only the browser interface's status display, not a test of audible playback.
-
-### Procedural 3D controller prototype (source-only geometry fallback)
-
-![Browser rendering of the authored three-dimensional FLX4 inspired controller chassis, jogs, mixer, knobs, and performance pads without manufacturer textures](docs/screenshots/flx4-3d-source-only-geometry.png)
-
-This image is a **genuine browser capture** of [`FLX4Live2D/realistic.html?geometry=1`](FLX4Live2D/realistic.html) running with its procedural Three.js mesh fallback. It uses authored geometry and plain software materials for the chassis, pads, and buttons. No manufacturer photographs, controller skins, logos, texture maps, or local music files were loaded. This is a simplified, unbranded **source-only 3D prototype**, **not the full installed Mac application**, original manufacturer render, hardware verification, or evidence of exact visual parity. The real hardware dimensions inform layout, but labels, printed markings, and photorealistic details are intentionally absent.
-
-Run the 3D prototype locally from the repository root:
+The screenshot filenames and these version numbers are also checked in [`scripts/verify-release.mjs`](scripts/verify-release.mjs). Run it after any documentation or release changes:
 
 ```sh
-cd FLX4Live2D
-python3 -m http.server 8080
-# open http://127.0.0.1:8080/realistic.html?geometry=1
-```
-
-The required MIT-licensed Three.js JavaScript modules are now bundled under `FLX4Live2D/vendor/` with attribution. The ordinary `realistic.html` page still references excluded manufacturer art and remains visually incomplete without those authorized assets; the explicit `?geometry=1` path instead uses procedural meshes only.
-
-**Gallery limits:** These screenshots prove the installed app windows launched and document the surrounding UI, but cannot show the original hardware rendering publicly without clarified asset rights. No connected DDJ-FLX4 hardware or working DAW playback was verified in this screenshot audit. There is no verified standalone third 3D `.app` bundle in the scanned user Applications directory.
-
-## Explore the source
-
-The HTML is readable without an installed app. To inspect the browser UI, serve each app directory locally:
-
-```sh
-cd FLX4FlatDrumApp/ui
-python3 -m http.server 8080
-# open http://127.0.0.1:8080/
-```
-
-For the second view, serve `FLX4Live2D/` similarly and open `index.html` or `realistic.html`. The missing photo and 3D texture assets mean the visual result is incomplete. Follow each project's README and bridge scripts for its hardware integration architecture; no controller driver installation is performed by the browser preview.
-
-## Checks
-
-```sh
-node --check FLX4FlatDrumApp/ui/app.js
+node scripts/verify-release.mjs
+node FLX4FlatDrumApp/tests/test_controls.js
 node FLX4FlatDrumApp/tests/test_crossfader.js
 node --check FLX4Live2D/realistic3d.js
 node --check FLX4Live2D/sampler-companion.js
-python3 -m py_compile FLX4Live2D/bridge.py FLX4FlatDrumApp/native/FLX4LiveBridge.py
+python3 -m unittest discover -s FLX4Live2D -p test_bridge.py
 ```
 
-These checks cover source syntax and simulated crossfader behavior. Physical DDJ-FLX4 pad-to-Ableton routing, Rekordbox interoperability and end-to-end audio latency are **not verified** in this export.
+## Running and reproducing
 
-## Publication and assets
+On the original development Mac, these versions are installed as `~/Applications/FLX4 Live 2D.app` and `~/Applications/FLX4 Flat 2D.app`. Their source folders contain the native Swift app windows and local bridge. The corresponding native scripts build each application when the required dependencies and authorized visual assets are installed locally.
 
-This source export omits controller photographs, original 3D textures, WAV samples and generated `.app` bundles. The original hardware-backed visuals cannot be reproduced until redistributable replacements are supplied. Packaging scripts may require adapting local interpreter paths and installed dependencies. See [STATUS.md](STATUS.md) and [third-party notices](THIRD_PARTY_NOTICES.md).
+**Visual assets limitation:** The full controller photographs, branded face artwork, and original texture maps visible inside the screenshots are deliberately **not redistributed as standalone files** in this repository. Consequently, source-only builds cannot reproduce the two photographed controller surfaces exactly until equivalent authorized art is provided. For a self-contained, simplified 3D code preview, serve `FLX4Live2D/` locally and open `realistic.html?geometry=1`. The new screenshots are documentation of the actual apps; they are not substitutes for the missing source textures.
 
-DDJ-FLX4, rekordbox and Pioneer DJ/AlphaTheta marks belong to their respective owners. This community project has no official affiliation.
+The two app screenshots do not by themselves establish that a physical DDJ-FLX4 sent control data, that rekordbox and Ableton were fully routed, or that audio was heard. Status lights depict the app UI at capture time. See the individual project READMEs for supported software operations and their hardware limitations.
+
+## Rights and attribution
+
+The screenshots were supplied by the app's user specifically for this GitHub gallery. They contain third-party product branding and controller visuals; publishing the screenshots does not license extraction or reuse of manufacturer artwork or music. No original songs, controller texture maps, private music library files, or generated `.app` bundles are included. See [third-party notices](THIRD_PARTY_NOTICES.md) and [publication status](STATUS.md). This project is unofficial and is not endorsed by Pioneer DJ, AlphaTheta, or rekordbox.
