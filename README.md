@@ -27,6 +27,14 @@ The app window identifies **FLX4 Flat 2D — rekordbox + Existing Samplers**. It
 
 The installed app's window title specifies **Fixed 3D / rekordbox + Existing Samplers**. The 3D controller panel uses withheld photographs/textures, so only the app's surrounding authored controls are shown here. Despite its name, `FLX4 Live 2D` uses a fixed camera onto a 3D scene. The available source also exposes `realistic.html` for browser rendering, while `index.html` is another browser interface; they must not be conflated with an independently installed third macOS application.
 
+### Separate browser-only 2D performance interface (source preview)
+
+![Actual browser rendering of the independently authored FLX4 Live 2D source with virtual decks, mixer, pads, drum lab, and connections panel](docs/screenshots/flx4-browser-2d-source-only.png)
+
+This is a genuine Google Chrome screenshot of [`FLX4Live2D/index.html`](FLX4Live2D/index.html), rendered locally from the published HTML/CSS/JS with no external controller photos or proprietary textures. It is a **browser source preview**, not a screenshot of either installed `.app` window, and it is distinct from the fixed-camera 3D view in `realistic.html`. The browser was offline from rekordbox and Ableton, with no samples loaded. The visible WebAudio-ready indicator is only the browser interface's status display, not a test of audible playback.
+
+The separate [`FLX4Live2D/realistic.html`](FLX4Live2D/realistic.html) 3D browser source was also launched via a local HTTP server with the withheld original textures absent. Its Three.js controller panel rendered blank; consequently, no 3D geometry image is presented as a working controller. Its 3D JavaScript contains procedural chassis, knobs, buttons, jog and fader geometry, but the standalone visual source cannot currently recreate the installed model without resolving the missing texture/model display path and redistribution rights.
+
 **Gallery limits:** These screenshots prove the installed app windows launched and document the surrounding UI, but cannot show the original hardware rendering publicly without clarified asset rights. No connected DDJ-FLX4 hardware or working DAW playback was verified in this screenshot audit. There is no verified standalone third 3D `.app` bundle in the scanned user Applications directory.
 
 ## Explore the source
